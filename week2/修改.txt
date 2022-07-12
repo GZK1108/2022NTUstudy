@@ -1,0 +1,59 @@
+batch_size = 2
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(0.05))
+
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.05))
+
+model.add(Dense(32, activation='relu'))
+model.summary()
+model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(), metrics=['accuracy'])
+model.fit(train_data, batch_size = batch_size, epochs=10)
+
+# 第二次修改
+model.add(Conv2D(32, (3, 3), input_shape=(100, 100, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(32, (3, 3),activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+# 原本
+
+model.add(Conv2D(16, (5, 5), input_shape=(100, 100, 3), activation='relu')) # you can chage (5,5) to (3,3)
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(32, (5, 5), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(64, (5, 5), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Conv2D(128, (5, 5), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+model.add(Dropout(0.05))
+
+model.add(Flatten())
+
+model.add(Dense(1024, activation='relu'))
+model.add(Dropout(0.05))
+
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(0.05))
+
+model.add(Dense(num_classes, activation="softmax"))
+model.summary()
+model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(), metrics=['accuracy'])
+model.fit(train_data, batch_size=batch_size, epochs=2)
