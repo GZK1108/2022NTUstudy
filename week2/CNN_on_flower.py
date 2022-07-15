@@ -12,8 +12,8 @@ from matplotlib.pyplot import imshow
 import os
 
 
-train_root = "C:/Users/11453/PycharmProjects/riskassessment/data/Training/"
-test_root = "C:/Users/11453/PycharmProjects/riskassessment/data/Test/"
+train_root = "C:/Users/11453/PycharmProjects/riskassessment/data/flower/Training/"
+test_root = "C:/Users/11453/PycharmProjects/riskassessment/data/flower/Test/"
 # print(train_root)
 
 # show a picture
@@ -39,7 +39,7 @@ imshow(img)
 num_classes = len([i for i in os.listdir(train_root)])
 # print(num_classes)
 
-model = Sequential()
+"""model = Sequential()
 
 model.add(Conv2D(16, (3, 3), input_shape=(100, 100, 3), activation='relu')) # you can change (5,5) to (3,3)
 model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
@@ -73,7 +73,7 @@ model.fit(train_data, batch_size = batch_size, epochs=1)
 # score = model.evaluate(train_data)
 # print(score)
 score = model.evaluate(test_data)
-print(score)
+print(score)"""
 
 # save this model
 # from keras.models import save_model
