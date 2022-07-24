@@ -1,5 +1,7 @@
 # DAY 7
 from collections import Counter
+
+import numpy as np
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, f_regression
 from imblearn.over_sampling import SMOTE
@@ -79,4 +81,4 @@ pred = model.predict(X_test)
 pred_classes = np.argmax(pred, axis=1)
 cm = confusion_matrix(X_test.classes, pred_classes)
 # print(cm)
-print((cm[0,0]+cm[1,1]+cm[2,2])/(sum(sum(cm))))
+print((cm[0, 0] + cm[1, 1] + cm[2, 2]) / (sum(sum(cm))))
