@@ -1,4 +1,6 @@
 from collections import Counter
+import statsmodels.api as sm
+import joblib
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -26,6 +28,7 @@ df.dropna(inplace=True)  # Removing rows of NAN
 df.boxplot()
 # plt.show()
 
+# DUMMY
 dummy = pd.get_dummies(df["Sector"])
 df = df.merge(dummy, left_index=True, right_index=True)
 df = df.drop("Sector", axis="columns")
@@ -37,9 +40,23 @@ df = df[f]
 
 y = df.loc[:, ['Class']]
 X = df.drop(columns='Class')
+
+# normolization
 X["Net Income"] = stats.zscore(X["Net Income"].astype(np.float))
 X["EBIT"] = stats.zscore(X["EBIT"].astype(np.float))
-# print(X)
+
+# QQ plot -check heteroskedasticity-residual must be normally distributed
+mod_fit = sm.OLS(y,X).fit()
+res = mod_fit.resid
+fig = sm.qqplot(res)
+# plt.show()
+
+# anova
+model = ols("y ~ X", df).fit()
+print(model.summary())
+anova_results = anova_lm(model)
+print('\nANOVA results')
+print(anova_results)
 
 # split train and test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
@@ -64,14 +81,26 @@ pred = model.predict(X_test)
 cm = confusion_matrix(y_test, pred)
 print("randomforest accuracy", (cm[0, 0] + cm[1, 1]) / (sum(sum(cm))))
 
+# save model
+# joblib.dump(model, "randomforest_equity.j1")
+
+# load model
+# model1 = joblib.load('randomforest_quity.j1')
+# pred1 = model1.predict(x_test)
+
+# gradientboost
+model = ensemble.GradientBoostingClassifier(max_depth=10)
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+cm = confusion_matrix(y_test, pred)
+print("gradientboost accuracy", (cm[0, 0] + cm[1, 1]) / (sum(sum(cm))))
+
 # decision tree
 model = tree.DecisionTreeClassifier()
 model.fit(X_train, y_train)
-pred = model.predict(X_train)
-cm = confusion_matrix(pred, y_train)
-print(cm)
-accuracy = (cm[0,0]+cm[1,1])/sum(sum(cm))
-print(accuracy)
+pred = model.predict(X_test)
+cm = confusion_matrix(y_test, pred)
+print("decisiontree accuracy", (cm[0, 0] + cm[1, 1]) / (sum(sum(cm))))
 
 
 # MLP
@@ -80,10 +109,3 @@ model.fit(X_train, y_train)
 pred = model.predict(X_test)
 cm = confusion_matrix(y_test, pred)
 print("MLP accuracy", (cm[0, 0] + cm[1, 1]) / (sum(sum(cm))))
-
-
-model = ols("y ~ X", df).fit()
-print(model.summary())
-anova_results = anova_lm(model)
-print('\nANOVA results')
-print(anova_results)
